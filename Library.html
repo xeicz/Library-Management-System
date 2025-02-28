@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head<link rel="stylesheet" href="styles.css">
+    >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://www.uaabra.edu.ph/library.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 50px;
+            width: 60%;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #000;
+        }
+        th {
+            background: #555;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Library Management System</h1>
+        <input type="text" id="bookSearch" placeholder="Search for books...">
+        <button onclick="searchBook()">Search</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody id="results"></tbody>
+        </table>
+    </div>
+    <script>
+        function searchBook() {
+            let query = document.getElementById('bookSearch').value;
+            fetch(`http://localhost:5000/search?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let resultDiv = document.getElementById('results');
+                    resultDiv.innerHTML = '';
+                    data.forEach(book => {
+                        resultDiv.innerHTML += `
+                            <tr>
+                                <td>${book.title}</td>
+                                <td>${book.author}</td>
+                                <td><img src="${book.image}" alt="${book.title}" width="50"></td>
+                            </tr>
+                        `;
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
